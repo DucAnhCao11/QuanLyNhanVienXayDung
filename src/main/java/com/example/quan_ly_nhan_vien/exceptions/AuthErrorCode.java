@@ -7,8 +7,8 @@ import org.springframework.http.HttpStatus;
 @Getter
 @AllArgsConstructor
 public enum AuthErrorCode implements BaseErrorCode{
-    UNAUTHORIZED(1401,"Unauthorized - Token is missing or invalid.", HttpStatus.UNAUTHORIZED ),
-    FORBIDDEN(1403,"Forbidden - Token is invalid.", HttpStatus.FORBIDDEN ),
+    UNAUTHENTICATED(1401,"Unauthenticated", HttpStatus.UNAUTHORIZED ),
+    UNAUTHORIZED(1403,"You do not have permission.", HttpStatus.FORBIDDEN ),
     ;
     private final int code;
     private final String message;

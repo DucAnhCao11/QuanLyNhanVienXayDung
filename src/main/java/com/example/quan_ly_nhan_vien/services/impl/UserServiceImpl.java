@@ -13,6 +13,9 @@ import com.example.quan_ly_nhan_vien.repositories.RoleRepository;
 import com.example.quan_ly_nhan_vien.repositories.UserRepository;
 import com.example.quan_ly_nhan_vien.services.interfaces.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PostAuthorize;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -33,16 +36,28 @@ public class UserServiceImpl implements UserService {
     PasswordEncoder passwordEncoder;
 
     @Override
+    @PostAuthorize("returnObject.email == authentication.name")
     public UserResponse getUserById(Long id) {
         return userMapper.toUserResponse(userRepository.findById(id)
                 .orElseThrow(() -> new AppException(UserErrorCode.USER_NOT_FOUND)));
     }
 
     @Override
+    @PreAuthorize("hasRole('QUAN_TRI_VIEN')")
     public List<UserResponse> getAllUser() {
         return userRepository.findAll().stream()
                 .map(userMapper::toUserResponse)
                 .toList();
+    }
+
+    @Override
+    public UserResponse getMyInfo() {
+        var context = SecurityContextHolder.getContext();
+        String name = context.getAuthentication().getName();
+
+        User user = userRepository.findByEmail(name)
+                .orElseThrow(() -> new AppException(UserErrorCode.EMAIL_NOT_EXISTS));
+        return userMapper.toUserResponse(user);
     }
 
     @Override

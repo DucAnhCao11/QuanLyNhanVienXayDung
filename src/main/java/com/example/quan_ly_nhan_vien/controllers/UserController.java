@@ -33,6 +33,14 @@ public class UserController {
                 .build();
     }
 
+    @GetMapping("/myInfo")
+    public ApiResponse<UserResponse> getMyInfo() {
+        return ApiResponse.<UserResponse>builder()
+                .message("Đây là thông tin tài khoản của bạn")
+                .result(userService.getMyInfo())
+                .build();
+    }
+
     @PostMapping
     public ApiResponse<UserResponse> createUser(@RequestBody @Valid UserCreationRequest request) {
         return ApiResponse.<UserResponse>builder()

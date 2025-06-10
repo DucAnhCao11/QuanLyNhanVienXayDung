@@ -11,4 +11,5 @@ public interface UserService {
     List<UserResponse> getAllUser();
     UserResponse createUser(UserCreationRequest request);
     UserResponse updateUser(Long id, UserUpdateRequest request);
+    UserResponse getMyInfo();
 }
