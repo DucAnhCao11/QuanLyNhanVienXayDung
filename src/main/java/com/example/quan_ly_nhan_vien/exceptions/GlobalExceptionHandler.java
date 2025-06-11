@@ -12,7 +12,6 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(value = AppException.class)
     ResponseEntity<ApiResponse> handleAppException(AppException e) {
         BaseErrorCode errorCode = e.getErrorCode();
-
         return ResponseEntity.status(errorCode.getHttpStatusCode())
                 .body(ApiResponse.builder()
                         .code(errorCode.getCode())
@@ -23,7 +22,6 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(value = Exception.class)
     ResponseEntity<ApiResponse> handleException(Exception e) {
         CommonErrorCode errorCode = CommonErrorCode.UNCATEGORIZED_EXCEPTION;
-
         return ResponseEntity.status(errorCode.getHttpStatusCode())
                 .body(ApiResponse.builder()
                         .code(errorCode.getCode())
@@ -35,7 +33,6 @@ public class GlobalExceptionHandler {
     ResponseEntity<ApiResponse> handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
         String enumKey = e.getBindingResult().getFieldError().getDefaultMessage();
         BaseErrorCode errorCode = ErrorCodeResolver.resolve(enumKey);
-
         return ResponseEntity.status(errorCode.getHttpStatusCode())
                 .body(ApiResponse.builder()
                         .code(errorCode.getCode())
@@ -46,7 +43,6 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(value = AccessDeniedException.class)
     ResponseEntity<ApiResponse> handleAccessDeniedException(AccessDeniedException e) {
         AuthErrorCode errorCode = AuthErrorCode.UNAUTHORIZED;
-
         return ResponseEntity.status(errorCode.getHttpStatusCode())
                 .body(ApiResponse.builder()
                         .code(errorCode.getCode())

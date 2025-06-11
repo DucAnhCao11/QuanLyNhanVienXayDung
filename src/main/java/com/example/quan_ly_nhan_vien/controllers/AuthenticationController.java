@@ -2,6 +2,7 @@ package com.example.quan_ly_nhan_vien.controllers;
 
 import com.example.quan_ly_nhan_vien.dto.requests.authRequest.AuthenticationRequest;
 import com.example.quan_ly_nhan_vien.dto.requests.authRequest.IntrospectRequest;
+import com.example.quan_ly_nhan_vien.dto.requests.authRequest.LogOutRequest;
 import com.example.quan_ly_nhan_vien.dto.responses.ApiResponse;
 import com.example.quan_ly_nhan_vien.dto.responses.AuthenticationResponse;
 import com.example.quan_ly_nhan_vien.dto.responses.IntrospectResponse;
@@ -37,6 +38,15 @@ public class AuthenticationController {
         var result = authenticationService.introspect(introspectRequest);
         return ApiResponse.<IntrospectResponse>builder()
                 .result(result)
+                .build();
+    }
+
+    @PostMapping("/logout")
+    public ApiResponse<Void> logOut (@RequestBody LogOutRequest request)
+            throws ParseException, JOSEException {
+        authenticationService.logOut(request);
+        return ApiResponse.<Void>builder()
+                .message("Logout successful.")
                 .build();
     }
 }

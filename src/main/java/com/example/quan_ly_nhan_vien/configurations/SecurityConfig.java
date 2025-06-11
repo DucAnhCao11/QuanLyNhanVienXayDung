@@ -1,5 +1,6 @@
 package com.example.quan_ly_nhan_vien.configurations;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -24,10 +25,10 @@ import javax.crypto.spec.SecretKeySpec;
 @EnableMethodSecurity
 public class SecurityConfig {
 
-    private final String [] PUBLIC_ENPOINTS_POST = {"/auth/token", "/auth/introspect"};
+    private final String [] PUBLIC_ENPOINTS_POST = {"/auth/token", "/auth/introspect", "/auth/logout"};
 
-    @Value("${jwt.signKey}")
-    private String signKey;
+    @Autowired
+    private CustomJwtDecoder jwtDecoder;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
@@ -42,7 +43,7 @@ public class SecurityConfig {
 
         // Cấu hình để sử dụng OAuth2 Resource Server với JWT (JSON Web Token)
         httpSecurity.oauth2ResourceServer(oauth2 ->
-                oauth2.jwt(jwtConfigurer -> jwtConfigurer.decoder(jwtDecoder())
+                oauth2.jwt(jwtConfigurer -> jwtConfigurer.decoder(jwtDecoder)
                         .jwtAuthenticationConverter(jwtAuthenticationConverter()))
 
                         //Xử lý lỗi 401
@@ -62,17 +63,6 @@ public class SecurityConfig {
         JwtAuthenticationConverter converter = new JwtAuthenticationConverter();
         converter.setJwtGrantedAuthoritiesConverter(jwtGrantedAuthoritiesConverter);
         return converter;
-    }
-
-    @Bean
-    JwtDecoder jwtDecoder() {
-        // Tạo khóa bí mật từ chuỗi signKey và chỉ định thuật toán HS512
-        SecretKeySpec secretKeySpec  = new SecretKeySpec(signKey.getBytes(), "HS512");
-
-        // Trả về một đối tượng JwtDecoder sử dụng NimbusJwtDecoder với khóa bí mật và thuật toán HS512
-        return NimbusJwtDecoder.withSecretKey(secretKeySpec)
-                .macAlgorithm(MacAlgorithm.HS512)
-                .build();
     }
 
     @Bean
