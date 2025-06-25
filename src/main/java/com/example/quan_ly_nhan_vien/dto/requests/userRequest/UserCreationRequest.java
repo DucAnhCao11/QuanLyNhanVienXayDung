@@ -1,18 +1,18 @@
 package com.example.quan_ly_nhan_vien.dto.requests.userRequest;
 
+import java.time.LocalDate;
+
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
-import lombok.*;
 
-import java.time.LocalDate;
+import lombok.*;
 
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-
 public class UserCreationRequest {
     private Integer idRole;
 

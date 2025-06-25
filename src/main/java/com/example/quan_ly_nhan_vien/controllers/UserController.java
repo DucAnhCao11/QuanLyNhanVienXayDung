@@ -1,15 +1,17 @@
 package com.example.quan_ly_nhan_vien.controllers;
 
+import java.util.List;
+
+import jakarta.validation.Valid;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
 import com.example.quan_ly_nhan_vien.dto.requests.userRequest.UserCreationRequest;
 import com.example.quan_ly_nhan_vien.dto.requests.userRequest.UserUpdateRequest;
 import com.example.quan_ly_nhan_vien.dto.responses.ApiResponse;
 import com.example.quan_ly_nhan_vien.dto.responses.UserResponse;
 import com.example.quan_ly_nhan_vien.services.interfaces.UserService;
-import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/user")
@@ -51,7 +53,7 @@ public class UserController {
 
     @PutMapping("/{id}")
     public ApiResponse<UserResponse> updateUser(@PathVariable long id, @RequestBody @Valid UserUpdateRequest request) {
-        return  ApiResponse.<UserResponse>builder()
+        return ApiResponse.<UserResponse>builder()
                 .message("Đã cập nhật User với id:" + id)
                 .result(userService.updateUser(id, request))
                 .build();

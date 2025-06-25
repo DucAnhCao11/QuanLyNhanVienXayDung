@@ -4,10 +4,8 @@ import java.util.List;
 
 public class ErrorCodeResolver {
 
-    private static final List<Class<? extends Enum<?>>> errorEnums = List.of(
-            UserErrorCode.class,
-            CommonErrorCode.class
-    );
+    private static final List<Class<? extends Enum<?>>> errorEnums =
+            List.of(UserErrorCode.class, CommonErrorCode.class);
 
     @SuppressWarnings("unchecked")
     public static BaseErrorCode resolve(String key) {

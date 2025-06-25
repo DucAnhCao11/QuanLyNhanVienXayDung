@@ -1,20 +1,22 @@
 package com.example.quan_ly_nhan_vien.controllers;
 
-import com.example.quan_ly_nhan_vien.dto.requests.authRequest.AuthenticationRequest;
-import com.example.quan_ly_nhan_vien.dto.requests.authRequest.IntrospectRequest;
-import com.example.quan_ly_nhan_vien.dto.requests.authRequest.LogOutRequest;
-import com.example.quan_ly_nhan_vien.dto.responses.ApiResponse;
-import com.example.quan_ly_nhan_vien.dto.responses.AuthenticationResponse;
-import com.example.quan_ly_nhan_vien.dto.responses.IntrospectResponse;
-import com.example.quan_ly_nhan_vien.services.interfaces.AuthenticationService;
-import com.nimbusds.jose.JOSEException;
+import java.text.ParseException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.text.ParseException;
+import com.example.quan_ly_nhan_vien.dto.requests.authRequest.AuthenticationRequest;
+import com.example.quan_ly_nhan_vien.dto.requests.authRequest.IntrospectRequest;
+import com.example.quan_ly_nhan_vien.dto.requests.authRequest.LogOutRequest;
+import com.example.quan_ly_nhan_vien.dto.requests.authRequest.RefreshTokenRequest;
+import com.example.quan_ly_nhan_vien.dto.responses.ApiResponse;
+import com.example.quan_ly_nhan_vien.dto.responses.AuthenticationResponse;
+import com.example.quan_ly_nhan_vien.dto.responses.IntrospectResponse;
+import com.example.quan_ly_nhan_vien.services.interfaces.AuthenticationService;
+import com.nimbusds.jose.JOSEException;
 
 @RestController
 @RequestMapping("/auth")
@@ -36,17 +38,19 @@ public class AuthenticationController {
     public ApiResponse<IntrospectResponse> introspect(@RequestBody IntrospectRequest introspectRequest)
             throws ParseException, JOSEException {
         var result = authenticationService.introspect(introspectRequest);
-        return ApiResponse.<IntrospectResponse>builder()
-                .result(result)
-                .build();
+        return ApiResponse.<IntrospectResponse>builder().result(result).build();
     }
 
     @PostMapping("/logout")
-    public ApiResponse<Void> logOut (@RequestBody LogOutRequest request)
-            throws ParseException, JOSEException {
+    public ApiResponse<Void> logOut(@RequestBody LogOutRequest request) throws ParseException, JOSEException {
         authenticationService.logOut(request);
-        return ApiResponse.<Void>builder()
-                .message("Logout successful.")
-                .build();
+        return ApiResponse.<Void>builder().message("Logout successful.").build();
+    }
+
+    @PostMapping("/refreshToken")
+    public ApiResponse<AuthenticationResponse> refreshToken(@RequestBody RefreshTokenRequest request)
+            throws ParseException, JOSEException {
+        var result = authenticationService.refreshToken(request);
+        return ApiResponse.<AuthenticationResponse>builder().result(result).build();
     }
 }

@@ -1,5 +1,15 @@
 package com.example.quan_ly_nhan_vien.services.impl;
 
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PostAuthorize;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.example.quan_ly_nhan_vien.dto.requests.userRequest.UserCreationRequest;
 import com.example.quan_ly_nhan_vien.dto.requests.userRequest.UserUpdateRequest;
 import com.example.quan_ly_nhan_vien.dto.responses.UserResponse;
@@ -12,14 +22,6 @@ import com.example.quan_ly_nhan_vien.mappers.UserMapper;
 import com.example.quan_ly_nhan_vien.repositories.RoleRepository;
 import com.example.quan_ly_nhan_vien.repositories.UserRepository;
 import com.example.quan_ly_nhan_vien.services.interfaces.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PostAuthorize;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -35,19 +37,25 @@ public class UserServiceImpl implements UserService {
     @Autowired
     PasswordEncoder passwordEncoder;
 
+    private Role findRole(Integer id) {
+        return roleRepository.findById(id).orElseThrow(() -> new AppException(RoleErrorCode.ROLE_NOT_FOUND));
+    }
+
+    private User findUser(Long id) {
+        return userRepository.findById(id).orElseThrow(() -> new AppException(UserErrorCode.USER_NOT_FOUND));
+    }
+
     @Override
     @PostAuthorize("returnObject.email == authentication.name")
     public UserResponse getUserById(Long id) {
-        return userMapper.toUserResponse(userRepository.findById(id)
-                .orElseThrow(() -> new AppException(UserErrorCode.USER_NOT_FOUND)));
+        return userMapper.toUserResponse(
+                userRepository.findById(id).orElseThrow(() -> new AppException(UserErrorCode.USER_NOT_FOUND)));
     }
 
     @Override
     @PreAuthorize("hasRole('QUAN_TRI_VIEN')")
     public List<UserResponse> getAllUser() {
-        return userRepository.findAll().stream()
-                .map(userMapper::toUserResponse)
-                .toList();
+        return userRepository.findAll().stream().map(userMapper::toUserResponse).toList();
     }
 
     @Override
@@ -55,17 +63,18 @@ public class UserServiceImpl implements UserService {
         var context = SecurityContextHolder.getContext();
         String name = context.getAuthentication().getName();
 
-        User user = userRepository.findByEmail(name)
-                .orElseThrow(() -> new AppException(UserErrorCode.EMAIL_NOT_EXISTS));
+        User user =
+                userRepository.findByEmail(name).orElseThrow(() -> new AppException(UserErrorCode.EMAIL_NOT_EXISTS));
         return userMapper.toUserResponse(user);
     }
 
     @Override
+    @Transactional
+    @PreAuthorize("hasRole('QUAN_TRI_VIEN')")
     public UserResponse createUser(UserCreationRequest request) {
-        Role role = roleRepository.findById(request.getIdRole())
-                .orElseThrow(() -> new AppException(RoleErrorCode.ROLE_NOT_FOUND));
+        Role role = findRole(request.getIdRole());
 
-        if(userRepository.existsByEmail(request.getEmail())) {
+        if (userRepository.existsByEmail(request.getEmail())) {
             throw new AppException(UserErrorCode.EMAIL_ALREADY_EXISTS);
         }
 
@@ -77,15 +86,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
+    @PreAuthorize("hasRole('QUAN_TRI_VIEN')")
     public UserResponse updateUser(Long id, UserUpdateRequest request) {
-        Role role = roleRepository.findById(request.getIdRole())
-                .orElseThrow(() -> new AppException(RoleErrorCode.ROLE_NOT_FOUND));
-
-        User user = userRepository.findById(id)
-                .orElseThrow(() -> new AppException(UserErrorCode.USER_NOT_FOUND));
+        Role role = findRole(request.getIdRole());
+        User user = findUser(id);
 
         userMapper.updateUser(user, request);
-        user.setMatKhau(passwordEncoder.encode(user.getMatKhau()));
+        user.setMatKhau(passwordEncoder.encode(request.getMatKhau()));
         user.setRole(role);
 
         return userMapper.toUserResponse(userRepository.save(user));

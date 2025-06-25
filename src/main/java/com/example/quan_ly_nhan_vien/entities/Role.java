@@ -1,13 +1,13 @@
 package com.example.quan_ly_nhan_vien.entities;
 
 import jakarta.persistence.*;
+
 import lombok.*;
 
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-
 @Entity
 @Table(name = "role")
 public class Role {

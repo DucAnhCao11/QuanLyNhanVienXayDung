@@ -1,18 +1,18 @@
 package com.example.quan_ly_nhan_vien.entities;
 
+import java.time.LocalDate;
+
 import jakarta.persistence.*;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDate;
-
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-
 @Entity
 @Table(name = "user")
 public class User {
@@ -36,5 +36,4 @@ public class User {
 
     @Column(name = "trang_thai")
     private Integer trangThai;
-
 }
