@@ -48,8 +48,7 @@ public class UserServiceImpl implements UserService {
     @Override
     @PostAuthorize("returnObject.email == authentication.name")
     public UserResponse getUserById(Long id) {
-        return userMapper.toUserResponse(
-                userRepository.findById(id).orElseThrow(() -> new AppException(UserErrorCode.USER_NOT_FOUND)));
+        return userMapper.toUserResponse(findUser(id));
     }
 
     @Override
