@@ -2,13 +2,14 @@ package com.example.quan_ly_nhan_vien.controllers;
 
 import java.util.List;
 
-import com.example.quan_ly_nhan_vien.dto.requests.StaffRequest.CreateStaffRequest;
-import com.example.quan_ly_nhan_vien.dto.requests.StaffRequest.StaffUpdateRequest;
+import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import com.example.quan_ly_nhan_vien.dto.requests.StaffRequest.CreateStaffRequest;
+import com.example.quan_ly_nhan_vien.dto.requests.StaffRequest.StaffUpdateRequest;
 import com.example.quan_ly_nhan_vien.dto.responses.ApiResponse;
 import com.example.quan_ly_nhan_vien.dto.responses.StaffResponse;
 import com.example.quan_ly_nhan_vien.services.interfaces.StaffService;
@@ -17,6 +18,7 @@ import com.example.quan_ly_nhan_vien.services.interfaces.StaffService;
 @RequestMapping("/staff")
 public class StaffController {
     private static final Logger log = LoggerFactory.getLogger(StaffController.class);
+
     @Autowired
     private StaffService staffService;
 
@@ -37,7 +39,7 @@ public class StaffController {
     }
 
     @PostMapping
-    public ApiResponse<StaffResponse> staffCreation(@RequestBody CreateStaffRequest request) {
+    public ApiResponse<StaffResponse> staffCreation(@Valid @RequestBody CreateStaffRequest request) {
         return ApiResponse.<StaffResponse>builder()
                 .message("Đã tạo nhân viên thành công")
                 .result(staffService.staffCreation(request))

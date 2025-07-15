@@ -1,9 +1,15 @@
 package com.example.quan_ly_nhan_vien.dto.requests.StaffRequest;
 
-import lombok.*;
-
 import java.math.BigDecimal;
 import java.time.LocalDate;
+
+import com.example.quan_ly_nhan_vien.Validator.DobConstraint;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Past;
+import jakarta.validation.constraints.Size;
+import lombok.*;
 
 @Getter
 @Setter
@@ -19,7 +25,8 @@ public class CreateStaffRequest {
 
     private Integer gioiTinh;
 
-    private String ngaySinh;
+    @DobConstraint(min = 18, message = "INVALID_DOB")
+    private LocalDate ngaySinh;
 
     private String soCCCD;
 

@@ -20,15 +20,15 @@ public class GlobalExceptionHandler {
                         .build());
     }
 
-//    @ExceptionHandler(value = Exception.class)
-//    ResponseEntity<ApiResponse> handleException(Exception e) {
-//        CommonErrorCode errorCode = CommonErrorCode.UNCATEGORIZED_EXCEPTION;
-//        return ResponseEntity.status(errorCode.getHttpStatusCode())
-//                .body(ApiResponse.builder()
-//                        .code(errorCode.getCode())
-//                        .message(errorCode.getMessage())
-//                        .build());
-//    }
+    @ExceptionHandler(value = Exception.class)
+    ResponseEntity<ApiResponse> handleException(Exception e) {
+        CommonErrorCode errorCode = CommonErrorCode.UNCATEGORIZED_EXCEPTION;
+        return ResponseEntity.status(errorCode.getHttpStatusCode())
+                .body(ApiResponse.builder()
+                        .code(errorCode.getCode())
+                        .message(errorCode.getMessage())
+                        .build());
+    }
 
     @ExceptionHandler(value = MethodArgumentNotValidException.class)
     ResponseEntity<ApiResponse> handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {

@@ -11,5 +11,4 @@ public class StaffHelper {
         int number = RANDOM.nextInt(MAX_CODE);
         return PREFIX + String.format("%06d", number);
     }
-
 }

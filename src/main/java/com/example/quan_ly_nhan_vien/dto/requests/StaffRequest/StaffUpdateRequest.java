@@ -1,9 +1,9 @@
 package com.example.quan_ly_nhan_vien.dto.requests.StaffRequest;
 
-import lombok.*;
-
 import java.math.BigDecimal;
 import java.time.LocalDate;
+
+import lombok.*;
 
 @Getter
 @Setter
@@ -15,7 +15,7 @@ public class StaffUpdateRequest {
 
     private String hinhAnh;
 
-    private String ngaySinh;
+    private LocalDate ngaySinh;
 
     private String soCCCD;
 

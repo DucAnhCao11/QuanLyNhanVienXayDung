@@ -43,7 +43,7 @@ public class Staff {
     private Integer gioiTinh;
 
     @Column(name = "ngay_sinh")
-    private String ngaySinh;
+    private LocalDate ngaySinh;
 
     @Column(name = "so_CCCD", unique = true)
     private String soCCCD;

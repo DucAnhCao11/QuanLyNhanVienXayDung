@@ -1,8 +1,9 @@
 package com.example.quan_ly_nhan_vien.exceptions;
 
+import org.springframework.http.HttpStatus;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import org.springframework.http.HttpStatus;
 
 @Getter
 @AllArgsConstructor

@@ -1,24 +1,40 @@
 package com.example.quan_ly_nhan_vien.exceptions;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ErrorCodeResolver {
 
-    private static final List<Class<? extends Enum<?>>> errorEnums =
-            List.of(UserErrorCode.class, CommonErrorCode.class);
+    private static final Map<String, BaseErrorCode> ERROR_CODE_MAP = new HashMap<>();
 
-    @SuppressWarnings("unchecked")
-    public static BaseErrorCode resolve(String key) {
+    static {
+        List<Class<? extends Enum<?>>> errorEnums = List.of(
+                UserErrorCode.class,
+                StaffErrorCode.class,
+                CommonErrorCode.class
+        );
+
         for (Class<? extends Enum<?>> clazz : errorEnums) {
-            try {
-                Enum<?> enumVal = Enum.valueOf((Class<? extends Enum>) clazz, key);
-                if (enumVal instanceof BaseErrorCode) {
-                    return (BaseErrorCode) enumVal;
+            for (Enum<?> constant : clazz.getEnumConstants()) {
+                if (constant instanceof BaseErrorCode code) {
+                    String key = constant.name();
+
+                    if (ERROR_CODE_MAP.containsKey(key)) {
+                        System.err.println(" Duplicate error code key: " + key);
+                    }
+
+                    ERROR_CODE_MAP.put(key, code);
                 }
-            } catch (IllegalArgumentException ignored) {
-                // Không tìm thấy enum trong class này, tiếp tục.
             }
         }
-        return CommonErrorCode.ENUM_INVALID_KEY;
+    }
+
+    public static BaseErrorCode resolve(String key) {
+        return ERROR_CODE_MAP.getOrDefault(key, CommonErrorCode.ENUM_INVALID_KEY);
+    }
+
+    public static boolean exists(String key) {
+        return ERROR_CODE_MAP.containsKey(key);
     }
 }

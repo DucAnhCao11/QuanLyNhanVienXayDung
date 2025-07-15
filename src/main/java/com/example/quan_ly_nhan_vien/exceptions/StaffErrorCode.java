@@ -13,6 +13,7 @@ public enum StaffErrorCode implements BaseErrorCode {
     EMAIL_ALREADY_EXISTS(1003, "Email already exists", HttpStatus.BAD_REQUEST),
     PHONE_NUMBER_ALREADY_EXISTS(1004, "Phone number already exists", HttpStatus.BAD_REQUEST),
     CCCD_ALREADY_EXISTS(1005, "Citizen ID  already exists", HttpStatus.BAD_REQUEST),
+    INVALID_DOB(1006, "You must be at least 18 years old", HttpStatus.BAD_REQUEST),
     ;
 
     private final int code;
