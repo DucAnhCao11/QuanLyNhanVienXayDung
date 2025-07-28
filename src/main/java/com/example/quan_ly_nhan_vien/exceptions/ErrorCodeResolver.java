@@ -10,9 +10,7 @@ public class ErrorCodeResolver {
 
     static {
         List<Class<? extends Enum<?>>> errorEnums = List.of(
-                UserErrorCode.class,
-                StaffErrorCode.class,
-                CommonErrorCode.class
+                ValidateError.class
         );
 
         for (Class<? extends Enum<?>> clazz : errorEnums) {

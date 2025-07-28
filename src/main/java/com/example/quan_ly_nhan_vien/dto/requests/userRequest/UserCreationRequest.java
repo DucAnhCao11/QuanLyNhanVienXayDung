@@ -2,6 +2,7 @@ package com.example.quan_ly_nhan_vien.dto.requests.userRequest;
 
 import java.time.LocalDate;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
@@ -23,6 +24,7 @@ public class UserCreationRequest {
     @Pattern(regexp = "^(?=.*[A-Z])(?=.*[@#$%^&+=!])(?=.*[a-zA-Z]).{8,}$", message = "PASSWORD_ERROR")
     private String matKhau;
 
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate ngayTao = LocalDate.now();
 
     private Integer trangThai = 1;

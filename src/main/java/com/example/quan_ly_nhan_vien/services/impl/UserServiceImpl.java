@@ -2,6 +2,7 @@ package com.example.quan_ly_nhan_vien.services.impl;
 
 import java.util.List;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -23,6 +24,7 @@ import com.example.quan_ly_nhan_vien.repositories.RoleRepository;
 import com.example.quan_ly_nhan_vien.repositories.UserRepository;
 import com.example.quan_ly_nhan_vien.services.interfaces.UserService;
 
+@Slf4j
 @Service
 public class UserServiceImpl implements UserService {
     @Autowired
@@ -71,6 +73,8 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @PreAuthorize("hasRole('QUAN_TRI_VIEN')")
     public UserResponse createUser(UserCreationRequest request) {
+        log.info("createUser");
+
         Role role = findRole(request.getIdRole());
 
         if (userRepository.existsByEmail(request.getEmail())) {

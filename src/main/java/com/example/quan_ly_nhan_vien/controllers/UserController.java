@@ -4,6 +4,7 @@ import java.util.List;
 
 import jakarta.validation.Valid;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,6 +14,7 @@ import com.example.quan_ly_nhan_vien.dto.responses.ApiResponse;
 import com.example.quan_ly_nhan_vien.dto.responses.UserResponse;
 import com.example.quan_ly_nhan_vien.services.interfaces.UserService;
 
+@Slf4j
 @RestController
 @RequestMapping("/user")
 public class UserController {
@@ -45,6 +47,7 @@ public class UserController {
 
     @PostMapping
     public ApiResponse<UserResponse> createUser(@RequestBody @Valid UserCreationRequest request) {
+        log.info("User creation request: {}", request);
         return ApiResponse.<UserResponse>builder()
                 .message("Đã thêm mới một user.")
                 .result(userService.createUser(request))

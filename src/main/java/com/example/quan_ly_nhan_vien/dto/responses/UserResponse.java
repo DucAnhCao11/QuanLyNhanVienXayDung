@@ -2,6 +2,8 @@ package com.example.quan_ly_nhan_vien.dto.responses;
 
 import lombok.*;
 
+import java.time.LocalDate;
+
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
@@ -9,11 +11,11 @@ import lombok.*;
 public class UserResponse {
     private Long id;
 
-    private Object role;
+    private RoleResponse role;
 
     private String email;
 
-    private String ngayTao;
+    private LocalDate ngayTao;
 
     private Integer trangThai;
 }
